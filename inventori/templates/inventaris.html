@@ -1,0 +1,68 @@
+{% extends 'layout_default.html' %}
+{% block title %} Inventaris {% endblock %}
+
+
+{% block content %}
+    <div style="text-align: center">
+        <h3>DATA INVENTARIS</h3>
+    </div>
+    {% if messages %}
+        <div class="alert alert-info">
+            <ul class="messages">
+                {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+    <div style="padding-bottom: 10px">
+        <a href="{% url 'inventori:inv.add' %}" class="btn btn-outline-success">Tambah</a>
+    </div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Nama Barang</th>
+            <th>No. Inventaris</th>
+            <th>Tgl Beli</th>
+            <th>Petugas Pengadaan</th>
+            <th>Harga Pembelian</th>
+            <th>Lokasi</th>
+            <th>Tanggal Maintenance Terakhir</th>
+            <th>Nama Petugas Maintenance</th>
+            <th>Status Barang</th>
+            <th>Aksi</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        {% for d in datas %}
+            <tr>
+                <td>{{ d.inv_barang_id.barang_nama }}</td>
+                <td>{{ d.inv_nomor }}</td>
+                <td>{{ d.inv_pengadaan_tgl }}</td>
+                <td>{{ d.inv_pengadaan_petugas }}</td>
+                <td>{{ d.inv_pengadaan_harga }}</td>
+                <td>{{ d.inv_lokasi }}</td>
+                <td>{{ d.inv_perbaikan_tgl }}</td>
+                <td>{{ d.inv_perbaikan_petugas }}</td>
+                <td>{{ d.inv_status }}</td>
+                <td>
+                    <a href="{% url 'inventori:inv.edit' d.inv_id %}" class="btn btn-outline-primary btn-block">Edit</a>
+                    <button class="btn btn-outline-danger btn-block" onclick="delInv({{ d.inv_id }})">Hapus</button>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block javascript %}
+    <script>
+        function delInv(invID) {
+            $.post(`/inventori/delete/${invID}`, {'csrfmiddlewaretoken': '{{ csrf_token }}'})
+                .then(response => {
+                    location.reload()
+                })
+        }
+    </script>
+{% endblock %}

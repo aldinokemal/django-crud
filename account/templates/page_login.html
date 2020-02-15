@@ -1,0 +1,86 @@
+{% extends 'layout_auth.html' %}
+
+{% block title %}
+    Login
+{% endblock title %}
+
+{% block content %}
+    <div class="login-wrap" style="margin-top: 150px">
+    {% if messages %}
+        <div class="alert alert-success">
+            <ul class="messages">
+                {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+    <div class="login-html">
+        <input id="tab-1" type="radio" name="tab" class="sign-in" checked><label for="tab-1" class="tab">Sign In</label>
+        <input id="tab-2" type="radio" name="tab" class="for-pwd"><label for="tab-2" class="tab">Register</label>
+        <div class="login-form">
+            <div class="sign-in-htm">
+                <form action="" method="post">
+                    {% csrf_token %}
+                    <div class="group">
+                        <label for="user" class="label">Account ID</label>
+                        <input id="user" name="accountID" type="text" class="input">
+                    </div>
+                    <div class="group">
+                        <label for="pass" class="label">Password</label>
+                        <input id="pass" type="password" name="password" class="input" data-type="password">
+                    </div>
+                    <div class="group">
+                        <input type="submit" class="button" value="Sign In">
+                    </div>
+                </form>
+                <div class="hr"></div>
+            </div>
+            <div class="for-pwd-htm">
+                {% if form.errors %}
+                    {% for field in form %}
+                        {% for error in field.errors %}
+                            <div class="alert alert-danger">
+                                <strong>{{ error|escape }}</strong>
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
+                    {% for error in form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            <strong>{{ error|escape }}</strong>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                <form action="{% url 'account:register' %}" method="post">
+                    {% csrf_token %}
+                    {% comment %}<div class="group">
+						<label for="new_user" class="label">Username</label>
+						<input name="new_user" type="text" class="input">
+					</div>
+					<div class="group">
+						<label for="new_pass" class="label">Password</label>
+						<input name="new_pass" type="password" class="input">
+					</div>
+                    <div class="group">
+						<label for="new_pass" class="label">Conf Password</label>
+						<input name="new_pass" type="password" class="input">
+					</div>{% endcomment %}
+                    {% for field in formRegister %}
+                        {{ field.errors }}
+                        <div class="group">
+                            {#                        {{field.label_tag}}#}
+                            <label for="{{ field.label }}" class="label">{{ field.label }}</label>
+                            {{ field }}
+                            {#                            <input name="{{field.name}}" type="text" class="input">#}
+                        </div>
+                    {% endfor %}
+
+                    <div class="group">
+                        <input type="submit" class="button" value="Register">
+                    </div>
+                </form>
+                <div class="hr"></div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

@@ -1,0 +1,37 @@
+{% extends 'layout_default.html' %}
+{% block title %} Tambah Inventaris {% endblock %}
+
+
+{% block content %}
+    <form action="{% url 'inventori:inv.add' %}" method="post">
+        <div class="card">
+            {% if messages %}
+                <div class="alert alert-info">
+                    <ul class="messages">
+                        {% for message in messages %}
+                            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+            <div class="card-body">
+                <div style="text-align: center">
+                    <h3>Tambah Inventaris</h3>
+                </div>
+
+                {% csrf_token %}
+                {% for field in form %}
+                    <div class="form-group">
+                        <label for="{{ field.label }}" class="label">{{ field.label }}</label>
+                        {{ field }}
+                        {{ field.errors }}
+                    </div>
+                {% endfor %}
+
+            </div>
+            <div class="card-footer">
+                <button class="btn btn-outline-success">Simpan</button>
+            </div>
+        </div>
+    </form>
+{% endblock %}

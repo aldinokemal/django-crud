@@ -1,0 +1,58 @@
+{% extends 'layout_default.html' %}
+{% block title %} Barang {% endblock %}
+
+
+{% block content %}
+    <div style="text-align: center">
+        <h3>DATA BARANG</h3>
+    </div>
+    {% if messages %}
+        <div class="alert alert-info">
+            <ul class="messages">
+                {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+    <div style="padding-bottom: 10px">
+        <a href="{% url 'inventori:barang.add' %}" class="btn btn-outline-success">Tambah</a>
+    </div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Nama</th>
+            <th>Brand</th>
+            <th>Jenis</th>
+            <th>Spesifiaksi</th>
+            <th>Aksi</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        {% for d in datas %}
+            <tr>
+                <td>{{ d.barang_nama }}</td>
+                <td>{{ d.barang_brand }}</td>
+                <td>{{ d.barang_jenis }}</td>
+                <td>{{ d.barang_spek }}</td>
+                <td>
+                    <a href="{% url 'inventori:barang.edit' d.barang_id %}" class="btn btn-outline-primary">Edit</a>
+                    <button class="btn btn-outline-danger" onclick="delBarang({{ d.barang_id }})">Hapus</button>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block javascript %}
+    <script>
+        function delBarang(BarangID) {
+            $.post(`/barang/delete/${BarangID}`, {'csrfmiddlewaretoken': '{{ csrf_token }}'})
+                .then(response => {
+                    location.reload()
+                })
+        }
+    </script>
+{% endblock %}
