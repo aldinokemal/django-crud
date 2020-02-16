@@ -9,6 +9,7 @@ class Barang(models.Model):
     barang_brand = models.CharField(max_length=255)
     barang_jenis = models.CharField(max_length=255)
     barang_spek = models.CharField(max_length=500)
+    barang_image = models.ImageField(default='default.png')
     barang_created = models.DateTimeField(auto_now_add=True)
     barang_updated = models.DateTimeField(blank=True, null=True)
 

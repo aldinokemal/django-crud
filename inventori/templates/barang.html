@@ -36,6 +36,7 @@
                 <td>{{ d.barang_brand }}</td>
                 <td>{{ d.barang_jenis }}</td>
                 <td>{{ d.barang_spek }}</td>
+                <td><img src="{{d.barang_image.url}}" alt="Gambar" style="width: 50px"></td>
                 <td>
                     <a href="{% url 'inventori:barang.edit' d.barang_id %}" class="btn btn-outline-primary">Edit</a>
                     <button class="btn btn-outline-danger" onclick="delBarang({{ d.barang_id }})">Hapus</button>

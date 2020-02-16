@@ -21,7 +21,7 @@ def barang_show(request):
 @login_required
 def barang_add(request):
     if request.method == 'POST':
-        form = BarangForm(request.POST)
+        form = BarangForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             messages.success(request, 'Barang berhasil ditambahkan')
@@ -30,7 +30,7 @@ def barang_add(request):
             messages.error(request, 'Terjadi Kesalahan')
     else:
         form = BarangForm()
-        return render(request, "barang_add.html", {'form': form})
+    return render(request, "barang_add.html", {'form': form})
 
 
 @login_required
@@ -74,6 +74,7 @@ def inv_add(request):
         return render(request, "inventaris_add.html", {'form': form})
 
 
+@login_required
 def inv_edit(request, id):
     data = Inventaris.objects.get(inv_id=id)
 
@@ -89,6 +90,7 @@ def inv_edit(request, id):
         return render(request, "inventaris_edit.html", {'data': data, 'form': form})
 
 
+@login_required
 def inv_delete(request, id):
     inventaris = Inventaris.objects.get(inv_id=id)
     inventaris.delete()

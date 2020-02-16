@@ -3,7 +3,7 @@
 
 
 {% block content %}
-    <form action="{% url 'inventori:barang.add' %}" method="post">
+    <form action="{% url 'inventori:barang.add' %}" method="post" enctype="multipart/form-data">
         <div class="card">
             {% if messages %}
                 <div class="alert alert-info">

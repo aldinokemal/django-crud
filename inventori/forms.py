@@ -1,4 +1,5 @@
 from django import forms
+from django.core.files.images import ImageFile
 from django.core import validators
 from .models import Barang, Inventaris
 
@@ -6,7 +7,7 @@ from .models import Barang, Inventaris
 class BarangForm(forms.ModelForm):
     class Meta:
         model = Barang
-        fields = ['barang_nama', 'barang_brand', 'barang_jenis', 'barang_spek']
+        fields = ['barang_nama', 'barang_brand', 'barang_jenis', 'barang_spek', 'barang_image']
         labels = {
             'barang_nama': 'Nama Barang',
             'barang_brand': 'Penyedia Barang',
@@ -20,6 +21,11 @@ class BarangForm(forms.ModelForm):
             'barang_spek': forms.TextInput(attrs={'type': 'text', 'class': 'form-control'}),
         }
 
+    def clean_barang_image(self):
+        picture = self.cleaned_data.get("barang_image")
+        if picture.size > 1000000:
+            raise forms.ValidationError("Kegedean bosque !!!")
+        return picture
 
 class InvForm(forms.ModelForm):
     class Meta:
